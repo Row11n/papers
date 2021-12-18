@@ -1,5 +1,5 @@
 \documentclass[hyperref]{ctexart}
-\usepackage[left=2.50cm, right=2.50cm, top=1.50cm, bottom=2.50cm]{geometry} %页边距
+\usepackage[left=2.3cm, right=2.3cm, top=1.50cm, bottom=2.50cm]{geometry} %页边距
 \usepackage{helvet}
 \usepackage{amsmath, amsfonts, amssymb} % 数学公式、符号
 \usepackage[english]{babel}
@@ -14,6 +14,7 @@
 \renewcommand{\algorithmicensure}{ \textbf{Initialize:}} 
 \renewcommand{\algorithmicreturn}{ \textbf{Output:}}     
 %算法格式
+\setlength\columnsep{0.77cm}
 \usepackage{fancyhdr} %设置页眉、页脚
 \pagestyle{fancy}
 \fancyhf{} 
@@ -27,25 +28,23 @@
 \usepackage{hyperref} %bookmarks
 \hypersetup{colorlinks, bookmarks, unicode} %unicode
 \usepackage{multicol}
-\title{\textbf{不同劳资关系的激励效应对游戏公司的影响}}
+\title{\textbf{不同控制权的分配方式对游戏公司的影响}}
 \author{\sffamily 陈义桐 \\ \\复旦大学 \ 计算机科学与技术}
 \date{(Dated: \today)}
 \begin{document}
 	\maketitle
 		\noindent{\bf 摘要: }This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.\\
 		
-		\noindent{\bf 关键词: }劳资关系；激励；隐马尔可夫模型；雅达利；暴雪娱乐；任天堂
+		\noindent{\bf 关键词: }控制权分配；隐马尔可夫模型；雅达利；暴雪娱乐；任天堂
 	\begin{multicols}{2}
 	\section{引言}
-	This is introduction.This is introduction.This is introduction.This is introduction.This is introduction.This is introduction.This is introduction.This is introduction.This is introduction.This is introduction.This is introduction.
-	\section{文献综述}
-	This is introduction.This is introduction.This is introduction.This is introduction.This is introduction.This is introduction.
+	雅达利有限公司是上世纪70年代垄断级别的游戏产业公司。1983年，雅达利大崩溃，时任总裁雷·凯萨原是一名没有任何开发电子游戏的技术背景经营纺织品的商人。2021年年末，暴雪娱乐公司权力高层被指控性别歧视、性骚扰，包括总裁在内的多位重要人事离职，他们大多是各个游戏项目的主要技术负责人与创意总监，这导致公司所有游戏项目停滞。游戏，由于其强烈的交互性以及作品个人化作用极强导致的品牌黏性，使其不同于传统商业产品。在顶级游戏公司的运营中，传统的委托代理模式与互联网思维下的股份激励模式均受阻碍，如何合理进行控制权的分配成为顶级游戏公司需要解决的巨大难题。
 	\section{模型简介}
-	本文采用隐马尔可夫模型进行建模，这里简单介绍一下该模型的建立过程。
+	本文采用隐马尔可夫模型进行建模，这里简单介绍一下该模型的基本结构。
 	\subsection{模型原理}
 	马尔科夫过程，是指当前状态只与前一个状态有关，而与更之前的状态无关的随机过程。\par
     即对于一个随机过程$\{X(t), t\in T\}$，对于任意取定的参数$t_1 < t_2 < ... < t_n$,
-    \noindent 有: 
+    \noindent 有: \par
 	\begin{equation*}
 	\begin{aligned}
 	    P(X(t_n) = x_n | X(t_i) = x_i, i \in \{1,...,n - 1\})\\ = 
@@ -55,7 +54,7 @@
 	\indent\par 这样的一条状态序列称为马尔可夫链。\par
 	隐马尔可夫模型（Hidden Markov Model）是一个统计模型，它用来描述一个含有两条马尔可夫链的随机过程，其中一条状态链可见，另一条状态链不可见。\par
     假设我们于一些骰子中盲选出一个骰子进行掷骰子操作，即无法观察具体每一次掷骰子的结果由哪一个骰子产生，则对于这样的一个多次随机过程，掷骰子的结果组成的序列便为可见状态链$o$，而每一次产生结果的骰子组成的序列便为隐含状态链$q$。\par
-    对于隐马尔可夫过程，存在一些要素：\par 
+    对于隐马尔可夫过程，存在一些要素：\par \indent\par
     \noindent
     \begin{equation*}
     \begin{aligned}
@@ -63,19 +62,15 @@
         A &= [a_{ij}]_{n \times m} :a_{ij} = P(q_{t+1} = j|q_t = i)\\
         B &= [b_j(k)]_{n \times m}: b_j(k) = P(o_t = o_k|q_t = j)
     \end{aligned}
-    \end{equation*}\par
-    分别为初始状态向量，即第一次拿到某个骰子的概率；状态转移概率矩阵，即假定现在拿到骰子$i$，下一个骰子是$j$的概率；观测概率矩阵，即假定拿到了骰子$j$，扔出结果$k$的概率。
+    \end{equation*}\par \indent\par
+    分别为初始状态向量，即第一次拿到某个骰子的概率；状态转移概率矩阵，即假定现在拿到骰子$i$，下一个骰子是$j$的概率；观测概率矩阵，即假定拿到了骰子$j$，扔出结果$k$的概率。\par
+    通过确定要素的具体值，便可得到一个模型，此即隐马尔可夫模型。
+    \subsection{模型定义}
+    对于一家游戏公司，定义其生产游戏的成功指数$T$为可见状态变量，并设定成功阈值$T_{lim}$，当 $T > T_{lim}$ 时，我们认为该游戏是成功的;游戏成功与否的真值序列按时间顺序组成可见状态链$o$；定义其生产游戏的设计师的状态为隐含状态变量，与生产的游戏一一对应，组成隐含状态链$q$。进一步地，将所有设计师抽象为一位设计师，其状态用二元对$(\omega_i, \omega_r)$  表示，$\omega_i$  表示灵感值，$\omega_r$表示管理值。由于如何设计出成功的游戏作品已经超出本文的讨论范围，故我们假设该设计师设计的第一个游戏必然成功，即初始状态向量是满的$(\forall i, \pi_i = 1)$。在3.1与3.2中，我们将基于雅达利、暴雪娱乐与任天堂三家游戏公司的数据进行状态转移概率矩阵与观测概率矩阵的构造，完成整个模型的建立。
     
     
-    
-	\section{title}
-	\noindent Equations: 
-	\begin{equation}
-		E=mc^2
-	\end{equation}
-	\begin{equation}
-		H\psi=E\psi
-	\end{equation}\\
+	\section{模型构造}
+	\section{分析与反演}
 	\section{结论}
 	This is conclusion. This is conclusion. This is conclusion. This is conclusion. This is conclusion. This is conclusion. This is conclusion. This is conclusion. This is conclusion.This is conclusion.
 	
