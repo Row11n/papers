@@ -1,5 +1,5 @@
 \documentclass[hyperref]{ctexart}
-\usepackage[left=2.3cm, right=2.3cm, top=1.50cm, bottom=2.50cm]{geometry} %页边距
+\usepackage[left=2.3cm, right=2.3cm, top=1.1cm, bottom=2.50cm]{geometry} %页边距
 \usepackage{helvet}
 \usepackage{amsmath, amsfonts, amssymb} % 数学公式、符号
 \usepackage[english]{babel}
@@ -33,7 +33,7 @@
 \date{(Dated: \today)}
 \begin{document}
 	\maketitle
-		\noindent{\bf 摘要: }This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.This is abstract.\\
+		\noindent{\bf 摘要: }本文将以雅达利有限公司、暴雪娱司与任天堂为例，利用隐马尔可夫模型进行模型构造，讨论不同控制权的分配方式对游戏公司的影响。本文将通过经济学分析，得到三条假设，并通过模型反演验证其合理性，最后得到对于小型游戏工作室，控制权应该主要分配给游戏设计师；对于大型游戏公司，控制权应该主要分配给职业经理人，同时应该多样化产品结构，且不需要高强度的惩罚机制的主要结论。\\
 		
 		\noindent{\bf 关键词: }控制权分配；隐马尔可夫模型；雅达利；暴雪娱乐；任天堂
 	\begin{multicols}{2}
@@ -42,7 +42,7 @@
 	\section{模型简介}
 	本文采用隐马尔可夫模型进行建模，这里简单介绍一下该模型的基本结构。
 	\subsection{模型原理}
-	马尔科夫过程，是指当前状态只与前一个状态有关，而与更之前的状态无关的随机过程。\par
+	马尔科夫过程，是指当前状态只与前一个状态有关，而与更之前的状态无关的随机过程。\\ \par
     即对于一个随机过程$\{X(t), t\in T\}$，对于任意取定的参数$t_1 < t_2 < ... < t_n$,
     \noindent 有: \par
 	\begin{equation*}
@@ -66,7 +66,7 @@
     分别为初始状态向量，即第一次拿到某个骰子的概率；状态转移概率矩阵，即假定现在拿到骰子$i$，下一个骰子是$j$的概率；观测概率矩阵，即假定拿到了骰子$j$，扔出结果$k$的概率。\par
     通过确定要素的具体值，便可得到一个模型，此即隐马尔可夫模型。
     \subsection{模型定义}
-    对于一家游戏公司，定义其生产游戏的成功指数$T$为可见状态变量，并设定成功阈值$T_{lim}$，当 $T > T_{lim}$ 时，我们认为该游戏是成功的;游戏成功与否的真值序列按时间顺序组成可见状态链$o$；定义其生产游戏的设计师的状态为隐含状态变量，与生产的游戏一一对应，组成隐含状态链$q$。进一步地，将所有设计师抽象为一位设计师，其状态用二元对$(\omega_i, \omega_r)$  表示，$\omega_i$  表示灵感值，$\omega_r$表示管理值。由于如何设计出成功的游戏作品已经超出本文的讨论范围，故我们假设该设计师设计的第一个游戏必然成功，即初始状态向量是满的$(\forall i, \pi_i = 1)$。由于讨论的是公司的策略问题，故假设每个公司的设计师相同，即观测概率矩阵相同。在3.1中，我们将基于雅达利、暴雪娱乐与任天堂三家游戏公司的数据进行状态转移概率矩阵的构造；在3.2中，我们将基于预测结果的匹配度，完善观测概率矩阵的构造，从而完成整个模型的建立。
+    对于一家游戏公司，定义其生产游戏的成功指数$T$为可见状态变量，$T \in [1,10]$,$T$的值越大，则认为游戏越成功，当$T > 8$时，我们判断游戏为成功的，游戏的成功指数按时间顺序组成可见状态链$o$；定义其生产游戏的设计师的状态为隐含状态变量，与生产的游戏一一对应，组成隐含状态链$q$。进一步地，将所有设计师抽象为一位设计师，其状态用二元对$(\omega_i, \omega_r)$  表示，$\omega_i$  表示灵感值，$\omega_r$表示管理值。由于如何设计出成功的游戏作品已经超出本文的讨论范围，故我们假设该设计师设计的第一个游戏必然成功，即初始状态向量是满的$(\forall i, \pi_i > 8)$。由于讨论的是公司的策略问题，故假设每个公司的设计师相同，即观测概率矩阵相同。在3.1中，我们将基于雅达利、暴雪娱乐与任天堂三家游戏公司的数据进行状态转移概率矩阵的构造；在3.2中，我们将基于预测结果的匹配度，完善观测概率矩阵的构造，从而完成整个模型的建立。
     
     
 	\section{模型构造}
@@ -81,11 +81,11 @@
     \par
     现在考虑$\omega_r$对于$\omega_i$的影响。显然，当$\omega_r$较低时，$\omega_i$几乎不受影响；当$\omega_r$较高时，$\omega_i$偏向于向下迁移。我们将较低与较高量化为$[1, 3]$与$[4,5]$。
     \par
-    将上述分析进行简单的线性拟合，得到基础的状态转移概率矩阵$A = [a_{ij}]_{25 \times 9}$。由于需要考虑激励问题，即当目前游戏成功时，其$\omega_r$不会下降；反之，当目前游戏失败时，$\omega_r$不会上升，故还需要考虑矩阵的偏置。这里用一个简单的分摊函数\par
+    将上述分析进行简单的线性拟合，得到基础的状态转移概率矩阵$A = [a_{ij}]_{25 \times 9}$。由于需要考虑激励问题，即当目前游戏成功时，其$\omega_r$不会下降；反之，当目前游戏失败时，$\omega_r$不会上升，故还需要考虑矩阵的偏置。这里用一个简单的分摊函数\\\par
     \noindent
     \begin{equation}
         p_i^* = \begin{cases} 0, i \in J \\ \frac{p_i}{1 - \sum p_j}, i \notin J ,j \in J\end{cases}
-    \end{equation}
+    \end{equation}\\
     来进行偏置，其中$J$在游戏成功时表示为$\omega_r$下降概率集合，反之表示上升概率集合。
     \par\indent\par
     一个例子,假定(3,3)的状态转移概率：\\
@@ -125,7 +125,7 @@
     \hline
     风暴英雄&守望先锋&8.4&9.17&
     \hline
-    \end{tabular}\\ \\ \\ \par
+    \end{tabular}\\ \\ \\ \\ \\  \par
     任天堂：\\ \\
      \begin{tabular}{|c|c|}
     \hline
@@ -140,34 +140,100 @@
     \begin{equation}
         p_1(\omega_i) = \frac{1}{\sqrt{2\pi}\sigma_i}e^{-0.5(\frac{5 - \omega_i}{\sigma_i})^2}
     \end{equation}\par
-    再考虑$\omega_r$。基于雅达利、暴雪与任天堂的事例分析，现在简单地认为，拥有一定的管理权有助于$T$， 但当$\omega_r$过高时，这样的帮助会锐减，故可视作$\mu_r = 4$，且$\sigma_r$较小；即对于$\omega_r$，有
+    再考虑$\omega_r$。基于雅达利、暴雪与任天堂的事例分析，现在简单地认为，考虑管理效率对于游戏制作的影响，拥有一定的管理权有助于$T$， 但当$\omega_r$过高时，这样的帮助会锐减，故可视作$\mu_r = 4$，且$\sigma_r$较小；即对于$\omega_r$，有
     \begin{equation}
         p_2(\omega_r) = \frac{1}{\sqrt{2\pi}\sigma_r}e^{-0.5(\frac{4
-        - \omega_i}{\sigma_i})^2}
+        - \omega_i}{\sigma_r})^2}
     \end{equation}\par
-    由于$T \in [1,10]$，且显然地，$\omega_i$对T的影响较$\omega_r$更高，故对于预测值$T*$，有
+    由于$T \in [1,10]$，且显然地，$\omega_i$对T的影响较$\omega_r$更高，故对于预测值$T^'$，有
     \begin{equation}
-        T* = 1.6\sum{\omega_i p^*_1(\omega_i)} + 0.4\sum {\omega_r p^*_2(\omega_r)}
+        T^{'} = 8*p^{'}_1(\omega_i) + 2*p^{'}_2(\omega_r)
     \end{equation}\par
-    其中$p^*_1$、$p^*_2$表示利用（1）将定义域外的概率分摊进定义域内。\par
-    基于（2）、（3）、（4），进行大量参数试算，得到当$\sigma_i = $，$\sigma_r = $时，基于暴雪娱乐的转移概率矩阵在给定初始状态为（x， x）时的产品值序列为 的概率为，基于任天堂的转移概率矩阵在给定初始状态为（x， x）时的产品值序列为 的概率为，与实际情况较为相符。\par
-    故得到最终的观测概率映射函数：
+    其中$p^{'}_1$、$p^{'}_2$表示利用（1）将$p^_1$、$p^_2$中定义域外的概率分摊进定义域内，并进行简单地离散归一化。\par
+    基于（2）、（3）、（4），进行大量参数试算，得到当$\sigma_i =1.50 $，$\sigma_r =0.83 $时，基于暴雪娱乐的转移概率矩阵在给定初始状态为（4， 4）时的产品值序列为(9.33， 9.23， 8.90， 8.57， 8.4， 9.17)在误差范围为0.3时的概率为0.64215897，基于任天堂的转移概率矩阵在给定初始状态为（4， 4）时的产品值序列为（8.87，8.23，8.90，7.00，8.47，7.00）在误差范围为0.3时的概率为0.53259921，均过半，与实际情况较为相符。\\\par
+    故得到最终的观测概率映射函数：\\
+    \begin{equation*}
+        T = 4.255384e^{-0.22(5 - \omega_i)^2} + 1.922613e^{-0.73(4
+        - \omega_i)^2}
+    \end{equation*}\par
 	    
 	\section{分析与反演}
 	\subsection{分析}
+	如前文提到，因为游戏是一种类艺术产品，所以游戏设计师更类似于艺术工作者而非一般劳动者。二者最大的不同在于，后者的工作效率是激励响应的，而前者是工作效率是激励失灵的。对于游戏设计师而言，$\omega_i$是浮动的且不受游戏设计师自己控制的，而无论是经济激励还是权力激励，都很难使得其$\omega_i$变得更好，反而当管理责任负荷过重时，$\omega_i$将会变得更坏。然而正是由于游戏设计师能力很难评测这一特性，使得任何游戏公司都倾向于让优秀的游戏设计师掌握部分管理权力以降低道德风险。\par
+	游戏也具有其独特的商品属性。首先是游戏的交互性。游戏是游戏设计师与玩家的有向异步信息流动，它反映为游戏设计师的选择性、延时性和玩家的即时性、互动性。这样的单方面信息流动大大增强了游戏中的个人化作用，从而形成品牌效应。其次是游戏的用户粘性。与一般商品不同，成功的游戏往往具有不菲的学习成本；为了防止学习成本沉默，玩家往往倾向于购买相同公司或类似类型的游戏产品，从而产生用户粘性与品牌黏性。基于上述两点，当一款游戏产品成功时，该游戏设计师不仅会获得内部的权力激励，还会获得外部的权力激励。\par
+	基于雅达利有限公司事例分析以及游戏设计师激励失灵这一特性，我们提出第一条假设：游戏公司不需要高强度的惩罚机制。因为游戏设计师是激励失灵的，故高强度的惩罚机制并不会导致其设计的游戏质量变好；同时，又因为其努力程度的难以观测以及产品反馈的延时性，高强度的惩罚机制将会激增道德风险。\par
+	基于暴雪娱乐的事例分析以及游戏成功后游戏设计师权力激励的必然存在性，我们提出第二条假设：若不加限制，连续的游戏产品的成功会使得控制权中心移向游戏设计师。\par
+	最后，基于任天堂的事例分析，我们提出第三条假设：任天堂的策略模式比暴雪娱乐的策略模式更容易生产出平庸的作品。这是由于顶尖游戏作品的产生往往需要顶尖的人才，而暴雪娱乐由于更低的道德风险，其$\omega_i$为5的游戏设计师更容易处于$\omega_r$为4，5的状态中，任天堂却更倾向于将控制权分配给$\omega_i$为4的优秀游戏设计师最终使得$\omega_r$为5的设计师更有可能被埋没。在4.2中，我们将利用数据反演，验证这三条假设的合理性。
 	\subsection{反演}
+	对于假设一，我们定义一个游戏设计师JY(1,4)，考虑游戏成功指数序列{5, 5, 5, ...}观测基于雅达利模型的$\omega_r$转移概率以及基于暴雪娱乐模型的$\omega_r$转移概率，视作高强度惩罚机制与低强度惩罚机制的对比。\par
+	对于序列{5, 5, 5, ...}，我们计算当他生产至第n个成功指数为5的产品时，其$\omega_r$降为1的概率。计算结果如下：\\ \\
+    \begin{tabular}{c|cccccc}
+     & 1 & 2 & 3 & ... & 7 & 8&
+     \hline
+     P_A & 0.0013 & 0.0109 & 0.0433 & ... & 0.5006 & 0.6621
+    \end{tabular}\\ \\ 
+    \begin{tabular}{c|cccccc}
+     & 1 & 2 & 3 & ... & 7 & 8&
+     \hline
+     P_B & 0.0005 & 0.0059 & 0.0357 & ... & 0.4592 & 0.6313
+    \end{tabular}\\ \par
+    其中$P_A$为基于雅达利模型的计算结果，$P_B$为基于暴雪娱乐模型的计算结果。\par
+    从上述计算结果可以看出，高强度惩罚机制与低强度惩罚机制对于发现德不配位的游戏设计师JY的效率是是否接近的。\par
+    我们重定义游戏设计师JY（4，1），考虑序列{9, 9, 9, ...},同上，观测当他生产至第n个成功指数为9的产品时，$\omega_r$仍然为1或2的概率。计算结果如下：\\ \\
+    \begin{tabular}{c|ccccc}
+     & 1 & 2 & 3 & 4 & 5&
+     \hline
+     P_A & 0.9130 & 0.8522 & 0.6129 & 0.3088 & 0.0947
+    \end{tabular}\\ \\ 
+    \begin{tabular}{c|ccccc}
+     & 1 & 2 & 3 & 4 & 5 &
+     \hline
+     P_B & 0.8441 & 0.5258 & 0.1351 & 0.0471 & 0.0096 
+    \end{tabular}\\ \par
+    其中$P_A$为基于雅达利模型的计算结果，$P_B$为基于暴雪娱乐模型的计算结果。\par
+    可以看到，即便是连续设计了四个成功的游戏，在雅达利也有三分之一的概率仍然处于权力下层，这是不合理的。假设1是合理的。\par
+    
+    对于假设2，我们仍然考虑JY（4，1）与{9, 9, 9，...}，同上，利用雅达利模型计算当他生产至第n个成功指数为9的产品时，$\omega_r$为5的概率。计算结果如下：\\ \\
+    \begin{tabular}{c|ccccc}
+     & 1 & 2  &...& 6 & 7&
+     \hline
+     P_A & 0.0002 & 0.0134 &...& 0.3088 & 0.5331
+    \end{tabular}\\ \\ 
+    可以看到，随着n的增加，增长速度递增越来越快。假设2是合理的。\par
+    对于假设3，我们定义同一个设计师JY（5，4），其分别基于任天堂模型与暴雪娱乐模型随机分布，我们统计其在生产的10个游戏产品中，成功指数低于8.5的游戏个数概率。统计结果如下：\\  \par
+    \begin{tabular}{c|cc|c|cc}
+     & P_A & P_B & & P_A & P_B &
+     \hline
+     1 & 0.937 & 0.754 & 2 & 0.901 & 0.692 &
+     3 & 0.852 & 0.549 & 4 & 0.733 & 0.390 &
+     5 & 0.549 & 0.192 & 6 & 0.301 & 0.081 &
+     7 & 0.129 & 0.019 & 8 & 0.043 & 0.001 &
+     9 & 0.001 & 0.000 & 10 & 0.001 & 0.000 &
+    \end{tabular}\\ \par
+    其中$P_A$为基于任天堂模型的统计结果，$P_B$为基于暴雪娱乐模型的统计结果。由统计结果易知假设3是合理的。\par
+    因此，游戏公司不需要高强度的惩罚机制；若不加限制，连续的游戏产品的成功会使得控制权中心移向游戏设计师；任天堂的策略模式比暴雪娱乐的策略模式更容易生产出平庸的作品。
 	\section{结论}
-	This is conclusion. This is conclusion. This is conclusion. This is conclusion. This is conclusion. This is conclusion. This is conclusion. This is conclusion. This is conclusion.This is conclusion.
+	根据前文分析以及三个假设的合理性，我们得到：对于小型游戏工作室，控制权应该主要分配给游戏设计师；对于大型游戏公司，控制权应该主要分配给职业经理人，同时应该多样化产品结构，且不需要高强度的惩罚机制。这是由于对于小型工作室而言，由于员工数量、部门数量较少，各部门沟通效率较高，使得对于管理者而言，其管理负荷较游戏公司更小，成为权力者对于游戏设计师的影响较小，而将控制权应该主要分配给游戏设计师要相较于将控制权应该主要分配给职业经理人更容易生成出顶尖的游戏作品；对于大型游戏公司而言，其管理负荷较大，故应该将控制权应该主要分配给职业经理人，同时为了解决游戏质量问题，应该多样化产品结构，例如成立独立工作室等，保证作品下限的同时尽量生产优质作品。\par
+	事实上任天堂就是这么做的，任天堂游戏的年生产量大约为十款左右，其中至少两款游戏评分在9分，而评分最低的作品也不会低于7分。暴雪娱乐在二十年间生产的游戏总数也没有超过十款，但几乎每一款游戏评分都不低于8.5分，这是他们曾经作为游戏工作室的成功之处，然而随着工作室体量逐渐膨胀至大型游戏公司，策略上的问题则久积爆发了。
 	
+	\small
 	\begin{thebibliography}{100}%此处数字为最多可添加的参考文献数量
-		\bibitem{article1}This is reference.%title author journal data pages
-		\bibitem{book1}This is reference.%title author publish date
+		\bibitem{article1}王岚,张朴.游戏公司股权激励效果及启示[J].合作经济与科技,2021(24):128-130.DOI:10.13665/j.cnki.hzjjykj.2021.24.051.
+		\bibitem{book1}聂志红.2008. 股权激励的理论基础及其性质探析[J]. 现代管理科学:41-43.
+		\bibitem{article1}郑和平.2003.马克思主义产权学说和委托代理理论的现实意义浅析[J]. 经济问题探索：123-124.
+		\bibitem{article1}DANG X, WANG L. Empirical Research on the Relationship between the Allocation Structure of Residual Control Rights, Residual Claim and Performances of State-owned Listed Companies in China: Based on the Perspective of Excess Control and Non-excess Control[J]. Forecasting, 2009.
+		\bibitem{article1}Wang X H, Liu X, Gao J. The Research of Methods of Pricing of Human Capital Based on Optimal Allocation of Residual Claims[C]//Advanced Materials Research. Trans Tech Publications Ltd, 2012, 452: 426-431.
+		\bibitem{article1}Ethan Gach，Inside Blizzard Developers’ Infamous Bill ‘Cosby Suite’[EB/OL]https://kotaku.com/inside-blizzard-developers-infamous-bill-cosby-suite-1847378762,2021.
+		\bibitem{article1}Kiririn,雅达利是怎么把自己「折腾至死」的？[EB/OL]https://sspai.com/post/69078,2021.
+		\bibitem{article1}https://www.ign.com/
+		\bibitem{article1}https://www.gamespot.com/
+		\bibitem{article1}https://www.gamersky.com
 	\end{thebibliography}
 	\end{multicols}
 	
 	
 	\\ \\ \\ \\附录：\\ \par
-	雅达利模型的状态转移概率矩阵：\\
+	雅达利模型的状态转移概率矩阵：\\ \\ \\
 	 \begin{tabular}{|c|ccccccccc|}
 	 \hline
     (x,y)  & (x-1,y-1) & (x-1,y)  & (x-1,y+1) & (x,y-1) & (x,y)& (x,y+1)& (x+1,y-1)& (x+1,y) & (x+1,y+1)&
@@ -198,9 +264,9 @@
 	(5,4)  & 0.06 & 0.12  & 0.065 & 0.18 & 0.36 & 0.03& 0.06&0.12&0.005&
 	(5,5)  & 0.06 & 0.12  & 0.07 & 0.18 & 0.36 & 0.03& 0.06&0.12&0&
 	\hline
-    \end{tabular}\\ \\ \par
+    \end{tabular}\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\\par
     
-    暴雪娱乐模型的状态转移概率矩阵：\\
+    暴雪娱乐模型的状态转移概率矩阵：\\ \\ \\
     \begin{tabular}{|c|ccccccccc|}
 	 \hline
     (x,y)  & (x-1,y-1) & (x-1,y)  & (x-1,y+1) & (x,y-1) & (x,y)& (x,y+1)& (x+1,y-1)& (x+1,y) & (x+1,y+1)&
@@ -231,9 +297,9 @@
 	(5,4)  & 0.02 & 0.12  & 0.18 & 0.06 & 0.36 & 0.11& 0.02&0.12&0.01&
 	(5,5)  & 0.02 & 0.12  & 0.19 & 0.06 & 0.36 & 0.11& 0.02&0.12&0&
 	\hline
-    \end{tabular}\\ \\ \par
+    \end{tabular}\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\\par
     
-    任天堂模型的状态转移概率矩阵：\\
+    任天堂模型的状态转移概率矩阵：\\ \\ \\
     \begin{tabular}{|c|ccccccccc|}
 	 \hline
     (x,y)  & (x-1,y-1) & (x-1,y)  & (x-1,y+1) & (x,y-1) & (x,y)& (x,y+1)& (x+1,y-1)& (x+1,y) & (x+1,y+1)&
