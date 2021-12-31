@@ -1,0 +1,192 @@
+\documentclass[hyperref]{ctexart}
+\usepackage[left=2.3cm, right=2.3cm, top=1.1cm, bottom=2.50cm]{geometry} %页边距
+\usepackage{helvet}
+\usepackage{amsmath, amsfonts, amssymb} % 数学公式、符号
+\usepackage[english]{babel}
+\usepackage{graphicx}   % 图片
+\usepackage{url}        % 超链接
+\usepackage{bm}         % 加粗方程字体
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsthm}
+\renewcommand{\algorithmicrequire}{ \textbf{Input:}}       
+\renewcommand{\algorithmicensure}{ \textbf{Initialize:}} 
+\renewcommand{\algorithmicreturn}{ \textbf{Output:}}     
+\newtheorem{definition}{Definition} 
+\newtheorem{theorem}{Theorem}
+%算法格式
+\setlength\columnsep{0.77cm}
+\usepackage{fancyhdr} %设置页眉、页脚
+\pagestyle{plain}
+\fancyhf{} 
+\lhead{}
+\chead{}
+\lfoot{}
+\cfoot{}
+\rfoot{}
+\renewcommand{\headrulewidth}{0} 
+\renewcommand{\footrulewidth}{0} 
+\usepackage{hyperref} %bookmarks
+\hypersetup{colorlinks, bookmarks, unicode} %unicode
+\usepackage{multicol}
+\title{\textbf{基于Ulam猜想的图同构算法}}
+\author{\sffamily 陈义桐 \\ \\复旦大学 \ 计算机科学与技术}
+\date{(Dated: January 1,2022)}
+\begin{document}
+	\maketitle
+		\noindent{\bf 摘要: }本文将以雅达利有限公司、暴雪娱司与任天堂为例，利用隐马尔可夫模型进行模型构造，讨论不同控制权的分配方式对游戏公司的影响。本文将通过经济学分析，得到三条假设，并通过模型反演验证其合理性，最后得到对于小型游戏工作室，控制权应该主要分配给游戏设计师；对于大型游戏公司，控制权应该主要分配给职业经理人，同时应该多样化产品结构，且不需要高强度的惩罚机制的主要结论。\\
+		
+		\noindent{\bf 关键词: }图同构；图同构算法；Ulam猜想；哈希；搜索
+	\begin{multicols}{2}
+	\section{引言}
+    图的同构判定是图论的基本问题之一，其在化学、电子电路设计以及其他的生物信息和计算机领域应用广泛，几乎所有图论专著都有提及。判断任意两图是否同构的问题是少有的几个不知是理论可行的或NP完全的NP问题之一，目前仍未找到解决这个问题的多项式时间算法。\par
+    对于图同构，有：
+    \begin{definition}[图的同构]
+    图$G = (V, E), G^{'} = (V^{'}, E^{'})$，如果存在一个从顶点集V到顶点集$V^{'}$的双射函数f，和一个从边集E到边集$E^{'}$的双射函数g，使得G中的边e与顶点v和w相关联当且仅当$G^{'}$中的边g(e)与顶点f(v)和f(w)相关联，则称G和$G^{'}$是同构的，记作G \cong $G^{'}$。函数f和g称为G到$G^{'}$的同构函数。
+    \end{definition}\par
+    由定义1，得到：
+    \begin{theorem}
+    图$G = (V, E), G^{'} = (V^{'}, E^{'})$同构当且仅当对某一顶点的顺序，它们的邻接矩阵是一样的。
+    \end{theorem}
+    \par
+    基于定理1，可以得到2.1中一种较为朴素的算法。
+    \section{主要算法}
+    \subsection{重排邻接矩阵基本算法}
+    基于定理1，得到一个朴素的暴力算法。对于任意两图$G,G^{'}$，遍历其所有顶点顺序，对比二者邻接矩阵，若找到不少于一个顶点顺序，使得二者邻接矩阵相同，则$G,G^{'}$是同构的，否则不同构。\par
+    例如:
+    \begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{1.png}
+    \caption{图同构判定例1}
+    \end{figure}
+    \par
+   在选择顶点序列分别为(a,b,c,d,e)与(1,2,3,4,5)时，可知二者邻接矩阵分别为： 
+   $$
+    \left[
+    \begin{matrix}
+    0 & 0 & 0 & 0 & 1\\
+    1 & 0 & 1 & 0 & 0\\
+    0 & 0 & 0 & 0 & 1\\
+    1 & 0 & 1 & 0 & 0\\
+    0 & 1 & 0 & 1 & 0
+     \end{matrix}
+     \right] \qquad
+    \left[
+    \begin{matrix}
+    0 & 1 & 0 & 1 & 0\\
+    0 & 0 & 0 & 0 & 1\\
+    0 & 1 & 0 & 1 & 0\\
+    0 & 0 & 0 & 0 & 1\\
+    1 & 0 & 1 & 0 & 0
+     \end{matrix}
+     \right] 
+    $$\par
+    此时其邻接矩阵不相同。但在选择顶点序列分别为(e,a,c,b,d)与(5,2,4,1,3)时，二者邻接矩阵分别为：
+    $$
+    \left[
+    \begin{matrix}
+    0 & 0 & 0 & 1 & 1\\
+    1 & 0 & 0 & 0 & 0\\
+    1 & 0 & 0 & 0 & 0\\
+    0 & 1 & 1 & 0 & 0\\
+    0 & 1 & 1 & 0 & 0
+     \end{matrix}
+     \right] \qquad
+    \left[
+    \begin{matrix}
+    0 & 0 & 0 & 1 & 1\\
+    1 & 0 & 0 & 0 & 0\\
+    1 & 0 & 0 & 0 & 0\\
+    0 & 1 & 1 & 0 & 0\\
+    0 & 1 & 1 & 0 & 0
+     \end{matrix}
+     \right]
+    $$\par
+    因此两图同构。
+    \par
+    基本算法将暴力地穷举所可能的顶点序列对，对每一个序列对进行一次邻接矩阵是否相等的判断，这样的操作等价于交换邻接矩阵的行和列，其复杂度是n！的。
+    \subsection{重排邻接矩阵算法的改进}
+    对于2.1中的基本算法，有明显的可改进处。显然地，若图$G,G^{'}$是同构的，则在顶点序列中，一一对应的顶点其出入度一定相同。因此可通过预处理，事先将点集以出入度为key值分块为$\{G_i\}$，重排时仅需重排各块中的点即可。举个例子，对于Figure1，可根据出入度分别为1/2，2/1与2/2将点集分为(a,c)、(b,d)和(e)以及(2,4)、(1,3)和（5)。显然地，若两图相同key值的块中点数量不同，两图不同构；若相同，则每次只需要重排块中的点集，即a、c对换，b、d对换，2、4对换和1、3对换，共4次。\par
+    令n为图的点总数，$n_i$为图各个块的点总数，满足$\sum n_i = n$，可知复杂度从n！降至$n_1!n_2!n_3!...n_i!...$。对于结点度数重复度比较低的图，该改进效果比较明显；但对于重复度较高的图如正则图，该改进近乎失效。\par
+    改进后算法的最坏情况复杂度仍为$n!$。
+    
+    \subsection{顶点度数序列算法}
+    [1]中提出一种算法，将同构图的判断的算法复杂度降至了$2^N$。首先，其定义了一种合并操作：
+    \begin{definition}[点的合并]
+    将点v与点w重合并使得原接于v的边都连接到w，并消去这一过程中可能出现的自环，这样的操作成为v与w的合并。
+    \end{definition}\par
+    并且证明了一个定理：
+     \begin{theorem}
+    若图$G = (V, E), G^{'} = (V^{'}, E^{'})$同构，则将其一一对应点合并后得到的新图仍然同构，且两合并点一一对应。
+    \end{theorem}
+    \par
+    由定理2可知，对于两个同构图之一，将其所有顶点进行任意组合并合并，则总能在另一个同构图中找到这样的相同的合并方式，否则其不同构。因此，得到：
+     \begin{theorem}
+    若图$G = (V, E), G^{'} = (V^{'}, E^{'})$同构，$G$的n点合并点集的出入度有序列分别为$S_i(n),S_o(n)$和$S_i^{'}(n), S_o^{'}(n)$，则对任意的$n \in \{1, 2, 3,...,N-1\}$，都有$S_i(n)=S_i^{'}(n),S_o(n)=S_o^{'}(n)$。
+    \end{theorem}\par
+    由定理3，可以得到一种图同构算法：对于N个结点图G，任意组合并合并其结点，得到各n个结点合并的出入度有序列。若两个图所有的出入度有序列均相同，则这两个图是同构的，否则不同构。
+    \par
+    分析算法复杂度，可知其主要计算在于对于任意组合的结点的出入度计算。对于N个结点的图，其结点的任意组合为$2^N$，故可知该算法复杂度为$2^N$。在N稍大时，由Stirling公式可知，其复杂度是明显优于n！的，但该算法的主要缺陷在于当判断图同构时，无法得到两图之间点与点的一一对应关系。
+    \par
+    该算法经过简单更改后，对于无向图也是适用的。
+    
+    \subsection{哈希算法}
+    哈希算法判断图同构是一种非精确的判断，其更常用证明两个图不同构。其基本思路是，通过某种哈希规则，将一个图映射到一个或多个实数上，这个实数作为这个图的哈希值。判断两图是否同构，则仅需对比哈希值是否相同。哈希算法判断图同构的准确性来自于哈希规则对于图的结构的抽象的准确性，越好的哈希规则可使得对于同构图的抽象越精确。哈希算法的性能往往会依据图的类型不同而不同。对于简单的无向图而言，处理点的权值就是一种比较好的哈希算法。\par
+    举个例子：对于一个n点无向图，初始化其每个点的权值为1。此后更新每个点的权值，更新公式为：
+    \begin{equation*}
+	\omega^{'} = \omega * \omega_{next} \% Mo
+	\end{equation*}\par
+    其中$\omega_{next}$为当前结点的相邻点点权值，$Mo$为任意模值。遍历每个相邻点后，即完成了一次对点权值的更新。之后对权值进行排序，对下一个点进行更新。由于对权值进行了排序，因此消除了选点先后顺序的影响，而仅与图结构有关。在多次操作后，对于两个图，若其权值有序列相同，则认为哈希值相同，两图同构，否则不同构。\par
+    哈希规则的制定方式还有很多，例如可结合最短路算法、最小生成树算法等，其本质都是使得哈希规则仅与图的结构有关，且哈希值的值域要尽可能的大，以避免哈希冲突。\par
+    事实上，哈希算法的思想也常用于精确判断的剪枝行为中。[2]中提出了同构图的一个充要条件，指出可先根据两图邻接矩阵不等于零的特征根数量和符号差是否相等来判断其矩阵是否合同，进而判断两图是否同构。虽然该算法由于强调邻接矩阵的对称性而适用性较窄，但可作为一种哈希规则事先过滤一些不同构的图对。基于哈希的剪枝思想在2.5将要介绍的搜索算法中被广泛使用。
+    \subsection{搜索算法}
+    在目前的图同构算法中，基于搜索的算法是极为重要也是应用最为广泛的算法。搜索算法的设计俱主要依据于[3]中提出的搜索算法优化的两个重点：回溯（backtracking）与剪枝（branch \& bound）。例如，在比较常用的Ullmann算法中，Ullmann提出利用预测方程来控制回溯过程以减少搜索空间；在VF算法中，其通过深度优先搜索，引入状态空间的概念描述匹配过程，并使用若干搜索规则进行大量剪枝，以加快搜索速度。\par
+    比较常见的搜索算法还有SD算法以及NAUTY算法，其中NAUTY算法十分实用。其首先对图进行预处理着色，视作某种规范形式，再进行图同构判断，性能较好。搜索算法发展至今已经逐渐优化，基于搜索算法可在现代个人计算机上1秒判断具有100个顶点的两个图是否同构,基本上适用于大多数图同构的判断场景。
+    \subsection{最新进展}
+    2017年初，László Babai在修正了其在[4]中的缺陷，宣布找到了一种用$2^{f(n)}$时间来确定两个具有n个顶点的图是否同构的算法。若算法正确，则表明图同构问题找到了一种准多项式时间的算法。目前大多数专家认为其现在的结果是正确的。由于该算法涉及大量群论知识，受限于笔者水平，故不在此评价该算法的正确性。
+    
+	\section{基于Ulam猜想的递归算法}
+	\subsection{算法介绍}
+	Ulam在1929年提出一个关于图重构的猜想，具体为：
+	\par
+    设$G_1$和$G_2$是两个图，其顶点数相同，若存在一个双射$f$, 使得对于任意$v \in V_1, G_1 - v \cong G_2 - \Phi(v)$，则$G_1$和$G_2$同构。\par
+    现在，我们将假设Ulam猜想是正确的，以此设计一种新的递归算法。首先得到一条定理。
+    \begin{theorem}
+    若图$G_1 = (V_1, E_1), G_2 = (V_2, E_2)$同构，$f$为$V_1$到$V_2$的同构函数，对$V_1$的任一子集合$V_1^{'} \subseteq V_1$,有$V_2^{'} = \{f(v) | v \in V_1^{'}\}$，则$G_1$的子图$G_1^{'}=(V_1^{'}, E_1^{'})$和$G_2$
+    的子图$G_2^{'}=(V_2^{'}, E_2^{'})$也是同构的。
+    \end{theorem}\par
+    \begin{proof}
+     用反证法，假设$G_1^{'}$, $G_2^{'}$不同构。
+     假定Ulam猜想为真，则对于任意两个同构图$G, G^{'}$，任意一个点$v \in G$，存在一个双射$f$，$s.t. \quad G - v \cong G^{'} - f(v)$。现在任取一个点$v \in \overline{V_1^{'}}$，可知对于该点，存在$f(v) \in V_2^{'}$，使得$ \quad G_1 - v \cong G_2 - f(v)$。因为$f$是同构函数，所以$f(v) \notin \overline{V_2^{'}}$。将此操作一直进行下去，直到$\overline{V_1^{'}}$中的每个点都从$G_1$中删去，此时得到的子图即$G_1^{'}$，可知$G_1^{'}$与$G_2^{'}$是同构的，与假设矛盾。
+    \end{proof}\par
+    基于定理4，类比2.2中算法改进的思想，将同构图分别按照出入度分块，易知此时两图块与块之间存在一个双射$g : \{V_1\} \rightarrow \{V_2\},\quad g(\{V_i\}) = \{V_j\}$当且仅当其出入度相同。很容易得到：
+    \begin{theorem}
+    若$G_1$与$G_2$同构，将其按照出入度分块，则在$G_1$中对于任意块的自由组合$G_1^{'}$，总能在$G_2^{'}$中得到由$g$映射而来的自由组合$G_2^{'}$，且$G_1^{'} \cong G_2^{'}$
+    \end{theorem}\par
+    \begin{proof}
+    考察双射$g$，可知由于对于同构图而言，块$V$中的点的同构对应点不可能出现在$g(V)$外的块中，故对于任意块的自由组合，其总能构成同构函数$f^{'}$。由定理4，定理5得证。
+    \end{proof}\par
+    基于定理4与定理5，可设计一种新的算法。首先将点集按出入度分块，并按照
+   
+ 
+	\section{结论}
+	
+	
+	\small
+	\begin{thebibliography}{100}%此处数字为最多可添加的参考文献数量
+	    \bibitem{article1}李锋,商慧亮.有向图的同构判定算法:出入度序列法[J].应用科学学报,2002(03):258-262.  
+	    \bibitem{article1}谢科,饶怀章.图同构的充要条件[J].西南民族大学学报(自然科学版),2011,37(05):703-705.
+	    \bibitem{article}Coen Bron and Joep Kerbosch. 1973. Algorithm 457: finding all cliques of an undirected graph. Commun. ACM 16, 9 (Sept. 1973), 575–577. DOI:https://doi.org/10.1145/362342.362367
+	    \bibitem{article}László Babai. 2016. Graph isomorphism in quasipolynomial time [extended abstract]. In* *Proceedings of the forty-eighth annual ACM symposium on Theory of Computing* *(**STOC '16**). Association for Computing Machinery, New York, NY, USA, 684–697. DOI:https://doi.org/10.1145/2897518.2897542
+	    \bibitem{article} J.R.Ullmann. 1976. An Algorithm for Subgraph Isomorphism. J. ACM 23, 1 (Jan. 1976), 31–42. DOI:https://doi.org/10.1145/321921.321925
+	    \bibitem{article}Douglas C. Schmidt and Larry E. Druffel. 1976. A Fast Backtracking Algorithm to Test Directed Graphs for Isomorphism Using Distance Matrices. J. ACM 23, 3 (July 1976), 433–445. DOI:https://doi.org/10.1145/321958.321963
+	    \bibitem{article}McKay B D. Practical graph isomorphism[J]. 1981.
+	    \bibitem{article}Luks E M. Isomorphism of graphs of bounded valence can be tested in polynomial time[J]. Journal of computer and system sciences, 1982, 25(1): 42-65.
+	    \bibitem{article}Cordella L P, Foggia P, Sansone C, et al. An improved algorithm for matching large graphs[C]//3rd IAPR-TC15 workshop on graph-based representations in pattern recognition. 2001: 149-159.
+	    \bibitem{article}
+	\end{thebibliography}
+	\end{multicols}
+	
+\end{document}
